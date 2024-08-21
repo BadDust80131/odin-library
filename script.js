@@ -14,6 +14,14 @@ function Book(title, author, pages, read) {
         }
         return `${this.title} by ${this.author}, ${this.pages} pages, ${temp}.`
     }
+    this.toggle = function() {
+        if (this.read == true) {
+            this.read = false
+        }else {
+            this.read = true
+        }
+        displayBooks();
+    }
 }
 
 myLibrary.push(new Book("Hobbit1","Tolkein","234",true));
@@ -38,13 +46,21 @@ function displayBooks() {
     cardHolder.innerHTML = ""
     myLibrary.forEach(element => {
         let close = document.createElement("button")
+        let toggle = document.createElement("button")
+        toggle.className = "toggle"
+        toggle.style.width = "50px";
+        toggle.style.height = "20px";
+        toggle.innerHTML = "Toggle";
+        toggle.dataset.index = i;
+        toggle.addEventListener("click", (event) => {myLibrary[toggle.dataset.index].toggle()});
         close.style.width = "50px";
         close.style.height = "20px";
         close.dataset.index = i;
         close.innerHTML = "Close";
         close.addEventListener("click", (event) => {removeSelf(close.dataset.index)});
         let card = document.createElement("div")
-        card.style.height = "50px";
+        card.className = "card"
+        card.style.height = "100px";
         card.style.width = "150px";
         card.style.textAlign = "center";
         card.style.boxShadow = "4px 4px 4px lightgray";
@@ -52,7 +68,8 @@ function displayBooks() {
         card.style.borderRadius = "5px";
         card.style.padding = "20px";
         card.innerHTML = element.info();
-        card.appendChild(close)
+        card.appendChild(close);
+        card.appendChild(toggle);
         cardHolder.appendChild(card);
         i += 1;
     });
